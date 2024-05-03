@@ -1,7 +1,5 @@
-#ifndef STRAGGLEML_APP_P4_HEADERS_P4
-#define STRAGGLEML_APP_P4_HEADERS_P4
-
-#include "util.p4"
+#ifndef _TYPES_P4
+#define _TYPES_P4
 
 const bit<16> LEN_ETH = 14 * 8;
 const bit<16> LEN_IP4 = 20 * 8;
