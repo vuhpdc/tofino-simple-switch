@@ -28,6 +28,8 @@ parser TofinoEgressParser(packet_in P, out egress_intrinsic_metadata_t IM) {
   }
 }
 
+
+
 parser IngressParser(packet_in P, out header_t H,
                      out metadata_t M,
                      out ingress_intrinsic_metadata_t IM) {
@@ -101,6 +103,25 @@ control IngressDeparser(packet_out P, inout header_t H,
           H.ip4.src_addr,
           H.ip4.dst_addr } );
     }
+    P.emit(H);
+  }
+}
+
+parser EgressParser(packet_in P,
+                    out empty_header_t H,
+                    out empty_metadata_t M,
+                    out egress_intrinsic_metadata_t  IM) {
+  state start {
+    P.extract(IM);
+    transition accept;
+  }
+}
+
+control EgressDeparser(packet_out P,
+                       inout empty_header_t H,
+                       in empty_metadata_t M,
+                       in egress_intrinsic_metadata_for_deparser_t DIM) {
+  apply {
     P.emit(H);
   }
 }

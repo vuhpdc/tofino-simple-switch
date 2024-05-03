@@ -14,7 +14,6 @@ control SimpleSwitchIngress(inout header_t H, inout metadata_t M,
     H.eth.dst_addr = H.eth.src_addr;
     H.eth.src_addr = tmp;
     DIM.drop_ctl = 0x0;
-    TIM.ucast_egress_port = IM.ingress_port;
   }
 
   action forward(PortId_t port) {
@@ -31,12 +30,19 @@ control SimpleSwitchIngress(inout header_t H, inout metadata_t M,
     default_action = drop;
   }
 
-  action arp_resolve(mac_addr_t mac, ip4_addr_t ip4) {
+  action arp_resolve(mac_addr_t mac) {
     H.arp.opcode = ARP_RES;
+
     H.arp_ip4.dst_hw_addr = H.arp_ip4.src_hw_addr;
-    H.arp_ip4.dst_proto_addr = H.arp_ip4.src_proto_addr;
     H.arp_ip4.src_hw_addr = mac;
-    H.arp_ip4.src_proto_addr = ip4;
+
+    ip4_addr_t tmp1 = H.arp_ip4.dst_proto_addr;
+    H.arp_ip4.dst_proto_addr = H.arp_ip4.src_proto_addr;
+    H.arp_ip4.src_proto_addr = tmp1;
+
+    // mac_addr_t tmp2 = H.eth.dst_addr;
+    H.eth.dst_addr = H.eth.src_addr;
+    H.eth.src_addr = mac;
   }
 
   table arp_table {
@@ -76,6 +82,6 @@ control EmptyEgress(inout empty_header_t H, inout empty_metadata_t M,
   apply {}
 }
 
-Pipeline(IngressParser(), SimpleSwitchIngress(), IngressDeparser(), EmptyEgressParser(), EmptyEgress(), EmptyEgressDeparser()) pipe;
+Pipeline(IngressParser(), SimpleSwitchIngress(), IngressDeparser(), EgressParser(), EmptyEgress(), EgressDeparser()) pipe;
 
 Switch(pipe) main;
