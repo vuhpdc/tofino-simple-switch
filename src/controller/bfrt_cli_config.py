@@ -58,10 +58,10 @@ if "endpoint" in cfg and "mac" in cfg["endpoint"] and "ip" in cfg["endpoint"]:
         # Add ARP entries for each host
         for p in cfg["ports"]:
             port = int(p)
-            for i, h in enumerate(cfg["ports"][p]):
+            for i, host_info in enumerate(cfg["ports"][p]):
                 err = None
-                ip4 = IPAddress(h['ip'])
-                mac = EUI(h['mac'])
+                ip4 = IPAddress(host_info['ip'])
+                mac = EUI(host_info['mac'])
                 try:
                     ARP.add_with_arp_resolve(dst_proto_addr=ip4, mac=mac)
                 except Exception as e:
@@ -75,9 +75,9 @@ if "ports" in cfg:
     print(Color.BOLD + "Configuring switch forwarding:" + Color.END)
     for p in cfg["ports"]:
         port = int(p)
-        for i, h in enumerate(cfg["ports"][p]):
+        for i, host_info in enumerate(cfg["ports"][p]):
             err = None
-            mac = EUI(h['mac'])
+            mac = EUI(host_info['mac'])
             try:
                 FRWD.add_with_forward(dst_addr=mac, port=port)
             except Exception as e:
