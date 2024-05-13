@@ -4,11 +4,11 @@
 #include "parsers.p4"
 #include "types.p4"
 
-control SimpleSwitchIngress(inout header_t H, inout metadata_t M,
-                            in ingress_intrinsic_metadata_t IM,
-                            in ingress_intrinsic_metadata_from_parser_t PIM,
-                            inout ingress_intrinsic_metadata_for_deparser_t DIM,
-                            inout ingress_intrinsic_metadata_for_tm_t TIM) {
+control Ingress(inout header_t H, inout metadata_t M,
+                in ingress_intrinsic_metadata_t IM,
+                in ingress_intrinsic_metadata_from_parser_t PIM,
+                inout ingress_intrinsic_metadata_for_deparser_t DIM,
+                inout ingress_intrinsic_metadata_for_tm_t TIM) {
   action reflect() {
     mac_addr_t tmp = H.eth.dst_addr;
     H.eth.dst_addr = H.eth.src_addr;
@@ -56,6 +56,16 @@ control SimpleSwitchIngress(inout header_t H, inout metadata_t M,
     H.icmp.msg_type = ICMP_ECHO_RES;
     H.icmp.checksum = 0;
     M.ip4_checksum_update = true;
+
+    // swap ip addresses
+    ip4_addr_t tmp = H.ip4.src_addr;
+    H.ip4.src_addr = H.ip4.dst_addr;
+    H.ip4.dst_addr = tmp;
+
+    // swap mac addresses
+    mac_addr_t tmp2 = H.eth.src_addr;
+    H.eth.src_addr = H.eth.dst_addr;
+    H.eth.dst_addr = tmp2;
   }
 
   table icmp_table {
@@ -82,6 +92,6 @@ control EmptyEgress(inout empty_header_t H, inout empty_metadata_t M,
   apply {}
 }
 
-Pipeline(IngressParser(), SimpleSwitchIngress(), IngressDeparser(), EgressParser(), EmptyEgress(), EgressDeparser()) pipe;
+Pipeline(IngressParser(), Ingress(), IngressDeparser(), EgressParser(), EmptyEgress(), EgressDeparser()) pipe;
 
 Switch(pipe) main;
