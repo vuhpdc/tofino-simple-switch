@@ -47,9 +47,13 @@ control Ingress(inout header_t H, inout metadata_t M,
 
   table arp_table {
     key = {H.arp_ip4.dst_proto_addr: exact;}
-    actions = {arp_resolve;drop;}
-    size=1024;
-    default_action = drop;
+    actions = {arp_resolve;drop;NoAction;}
+    size = 1024;
+    // Normally we would broadcast as the default_action
+    // But because 1) we hardcode mac addresses to ports
+    // and 2) assume there is no traffic outside this switch
+    // it is not really needed
+    default_action = NoAction;
   }
 
   action icmp_echo_response() {
