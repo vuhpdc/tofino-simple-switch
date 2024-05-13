@@ -17,7 +17,7 @@ class Color:
 with open(CONFIG_JSON, 'r') as f:
     data = json.load(f)
     if SWITCH_NAME not in data:
-        print("Switch '%s' not found in switches.json file" % SWITCH_NAME)
+        print("Switch '%s' not found in config.json" % SWITCH_NAME)
         sys.exit(1)
     cfg = data[SWITCH_NAME]
 
@@ -83,5 +83,6 @@ if "ports" in cfg:
             except Exception as e:
                 err = e
 
-            print("  %s %s (%s)" % (("port %d ->" % port) if i == 0 else " " * len("port %s ->" % p), mac, "ok" if err is None else err))
+            port_or_indent = ("port %d ->" % port) if i == 0 else (" " * len("port %d ->" % port))
+            print("  %s %s (%s)" % (port_or_indent, mac, "ok" if err is None else err))
 
