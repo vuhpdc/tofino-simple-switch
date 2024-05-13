@@ -43,11 +43,10 @@ for p in cfg["ports"]:
 
         print("  %s %s (%s)" % (("port %d ->" % port) if i == 0 else " " * len("port %s ->" % p), mac, "ok" if err is None else err))
 
-endpoint = "endpoint" in cfg and "mac" in cfg["endpoint"] and "ip" in cfg["endpoint"]
 
-if endpoint:
-
+if "endpoint" in cfg and "mac" in cfg["endpoint"] and "ip" in cfg["endpoint"]:
     print(Color.BOLD + "Configuring switch endpoint:" + Color.END)
+
     err = None
     mac = EUI(cfg["endpoint"]['mac'])
     ip4 = IPAddress(cfg["endpoint"]['ip'])
