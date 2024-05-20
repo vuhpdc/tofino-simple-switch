@@ -4,7 +4,8 @@ import sys
 import pprint
 from netaddr import IPAddress, EUI
 
-CONFIG_JSON = os.path.join(os.path.dirname(os.path.abspath(__file__)), "config.json")
+CONFIG_JSON = "tofino2.json"
+CONFIG_JSON = os.path.join(os.path.dirname(os.path.abspath(__file__)), CONFIG_JSON)
 SWITCH_NAME = 's1'
 
 class Color:
