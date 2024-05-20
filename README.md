@@ -50,10 +50,11 @@ One important thing to remember is that port numbering in Tofino1 and Tofino2 di
 </table>
 
 In other words Tofino1 special ports are >= 65 whereas in Tofino2 are in the range 0-8.
-In most cases the following rule suffices to transfer programs between Tofino1 and Tofino1:
 
-> Port N on Tofino 1 is equivalent to Port N+8 on Tofino2
-> Except port 64 which is equivalent to Tofino2 port number 2
+In most cases the following rule suffices to transfer programs between Tofino1 and Tofino2:
+
+> Port N on Tofino1 is equivalent to Port N+8 on Tofino2.
+> Except port 64 which corresponds to Tofino2 port number 2.
 
 See also how `tofino1.json` and `tofino2.json` assign ports to hosts
 
