@@ -49,7 +49,7 @@ One important thing to remember is that port numbering in Tofino1 and Tofino2 di
   </tr>
 </table>
 
-In other words special Tofino1 special ports are >= 65 whereas in Tofino2 are in the range 0-8.
+In other words Tofino1 special ports are >= 65 whereas in Tofino2 are in the range 0-8.
 In most cases the following rule suffices to transfer programs between Tofino1 and Tofino1:
 
 > Port N on Tofino 1 is equivalent to Port N+8 on Tofino2
