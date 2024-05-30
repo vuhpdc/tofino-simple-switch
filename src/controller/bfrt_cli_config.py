@@ -58,7 +58,9 @@ if "endpoint" in cfg and "mac" in cfg["endpoint"] and "ip" in cfg["endpoint"]:
 
         # Add ARP entries for each host
         for p in cfg["ports"]:
-            port = int(p)
+            # port = int(p if '/' not in p else p.split('/')[0])
+            # dp = int(p if '/' not in p else p.split('/')[1])
+
             for i, host_info in enumerate(cfg["ports"][p]):
                 err = None
                 ip4 = IPAddress(host_info['ip'])
@@ -75,15 +77,16 @@ if "endpoint" in cfg and "mac" in cfg["endpoint"] and "ip" in cfg["endpoint"]:
 if "ports" in cfg:
     print(Color.BOLD + "Configuring switch forwarding:" + Color.END)
     for p in cfg["ports"]:
-        port = int(p)
+        port = int(p if '/' not in p else p.split('/')[0])
+        dp = int(p if '/' not in p else p.split('/')[1])
         for i, host_info in enumerate(cfg["ports"][p]):
             err = None
             mac = EUI(host_info['mac'])
             try:
-                FRWD.add_with_forward(dst_addr=mac, port=port)
+                FRWD.add_with_forward(dst_addr=mac, port=dp)
             except Exception as e:
                 err = e
 
-            port_or_indent = ("port %d ->" % port) if i == 0 else (" " * len("port %d ->" % port))
+            port_or_indent = ("port %s ->" % p) if i == 0 else (" " * len("port %s ->" % p))
             print("  %s %s (%s)" % (port_or_indent, mac, "ok" if err is None else err))
 
