@@ -11,7 +11,7 @@ ifndef SDE_INSTALL
 $(error SDE_INSTALL is undefined)
 endif
 
-p4: check-env $(P4_SOURCES)
+p4: $(P4_SOURCES)
 	  rm -rf build
 	  mkdir build
 	  cmake -Bbuild -S${SDE}/p4studio -DCMAKE_INSTALL_PREFIX=${SDE_INSTALL}\
