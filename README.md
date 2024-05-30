@@ -8,6 +8,27 @@ The switch also has MAC and IP addresses of its own, and will respond to ARP and
 The switch is programmed based on a static configuration file. That is, it is **NOT** a learning switch.
 The files [tofino1.json](src/controller/tofino1.json) and [tofino2.json](src/controller/tofino2.json) are example configuration files.
 
+#### Usage
+
+To use this program on the real switch, first make sure the SDE is installed correctly the env. vars `$SDE` and `$SDE_INSTALL` are correcly set.
+
+The, SSH to the switch and start an tmux session (if the connection is lost the switchd user-space driver will be killed)
+```bash
+tmux -new-session -s switch
+```
+then,
+```bash
+make p4
+$SDE/run_switchd.sh -p simple_switch
+```
+Now open another terminal and SSH to the switch again, you don't need tmux for this, it will be fast.
+
+```bash
+$SDE/run_bfshell -b `pwd`/src/controller/bfrt_cli_config.py
+```
+
+#### Ports
+
 One important thing to remember is that port numbering in Tofino1 and Tofino2 differ. In particular:
 
 <table>

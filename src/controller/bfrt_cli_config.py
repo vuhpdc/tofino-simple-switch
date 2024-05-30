@@ -5,8 +5,10 @@ import pprint
 from netaddr import IPAddress, EUI
 
 CONFIG_JSON = "tofino2.json"
-CONFIG_JSON = os.path.join(os.path.dirname(os.path.abspath(__file__)), CONFIG_JSON)
+CONFIG_JSON = os.path.join(os.path.dirname(
+    os.path.abspath(__file__)), CONFIG_JSON)
 SWITCH_NAME = 's1'
+
 
 class Color:
     BLUE = '\033[94m'
@@ -14,6 +16,7 @@ class Color:
     RED = '\033[91m'
     BOLD = '\033[1m'
     END = '\033[0m'
+
 
 with open(CONFIG_JSON, 'r') as f:
     data = json.load(f)
@@ -25,7 +28,7 @@ with open(CONFIG_JSON, 'r') as f:
 # get a handle to the relevant tables
 P4 = bfrt.simple_switch.pipe
 ICMP = P4.Ingress.icmp_table
-ARP  = P4.Ingress.arp_table
+ARP = P4.Ingress.arp_table
 FRWD = P4.Ingress.forwarding_table
 
 # Configure the switch as an endpoint that can be pinged (ICMP)
@@ -44,7 +47,6 @@ if "endpoint" in cfg and "mac" in cfg["endpoint"] and "ip" in cfg["endpoint"]:
         err = e
     print("  %s / %s (%s)" % (sw_mac, sw_ip4, "ok" if err is None else err))
 
-
     if "arp-resolver" in cfg["endpoint"] and cfg["endpoint"]["arp-resolver"]:
         print(Color.BOLD + "Configuring switch arp-resolver:" + Color.END)
 
@@ -54,7 +56,8 @@ if "endpoint" in cfg and "mac" in cfg["endpoint"] and "ip" in cfg["endpoint"]:
             ARP.add_with_arp_resolve(dst_proto_addr=sw_ip4, mac=sw_mac)
         except Exception as e:
             err = e
-        print("  %s -> %s (%s)" % (sw_mac, sw_ip4, "ok" if err is None else err))
+        print("  %s -> %s (%s)" %
+              (sw_mac, sw_ip4, "ok" if err is None else err))
 
         # Add ARP entries for each host
         for p in cfg["ports"]:
@@ -69,24 +72,38 @@ if "endpoint" in cfg and "mac" in cfg["endpoint"] and "ip" in cfg["endpoint"]:
                     ARP.add_with_arp_resolve(dst_proto_addr=ip4, mac=mac)
                 except Exception as e:
                     err = e
-                print("  %s -> %s (%s)" % (mac, ip4, "ok" if err is None else err))
+                print("  %s -> %s (%s)" %
+                      (mac, ip4, "ok" if err is None else err))
 
-# perform static mapping of switch ports to hosts (or other switches)
-# normally we would have the switch "learn" those, but for our purposes
-# a static mapping is enough.
+
 if "ports" in cfg:
     print(Color.BOLD + "Configuring switch forwarding:" + Color.END)
+
+    # perform static mapping of switch ports to hosts (or other switches)
+    # normally we would have the switch "learn" those, but for our purposes
+    # a static mapping is enough.
     for p in cfg["ports"]:
-        port = int(p if '/' not in p else p.split('/')[0])
-        dp = int(p if '/' not in p else p.split('/')[1])
+        cage = int(p if '/' not in p else p.split('/')[0])
+        port = bfrt.port.port_hdl_info.get(
+            conn_id=cage, chnl_id=0, print_ents=False).data[b'$DEV_PORT']
+        print(port)
+
         for i, host_info in enumerate(cfg["ports"][p]):
             err = None
             mac = EUI(host_info['mac'])
             try:
-                FRWD.add_with_forward(dst_addr=mac, port=dp)
+                FRWD.add_with_forward(dst_addr=mac, port=port)
             except Exception as e:
                 err = e
 
-            port_or_indent = ("port %s ->" % p) if i == 0 else (" " * len("port %s ->" % p))
-            print("  %s %s (%s)" % (port_or_indent, mac, "ok" if err is None else err))
+            prefix = ("port %s ->" % p) if i == 0 else (" " * len("port %s ->" % p))
+            print("  %s %s (%s)" % (prefix, mac, "ok" if err is None else err))
 
+        # Also configure the ports
+        #
+        # The following line is  equivalent to the port manager (pm) sequence:
+        #   port-add cage/- 100G None
+        #   an-set cage/- 2
+        #   port-enb cage/-
+        bfrt.port.port.add(dev_port=port, speed="BF_SPEED_100G", fec="BF_FEC_TYP_NONE",
+                           auto_negotiation="PM_AN_FORCE_DISABLE", port_enable=True)
