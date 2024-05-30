@@ -1,7 +1,7 @@
 {
   "s1" : {
     "tofino": 1,
-    "program": "device/switch.p4",
+    "program": "device/simple_switch.p4",
     "endpoint": {"mac" : "10:10:10:10:10:01", "ip" : "10.10.10.1", "arp-resolver": true},
     "ports" : {
       "1" : [{"name" : "h1", "mac": "00:00:00:00:00:01", "ip": "10.0.0.1"}],

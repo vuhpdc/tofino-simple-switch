@@ -76,8 +76,6 @@ for sw in CFG:
             net.setIntfMac(node['name'], sw, mac=node['mac'])
 
 
-
-print("AAAAAAAAAAAAAAAAAAA", net.modules['comp']['class'])
 # net.addTofino('s1', sde=SDE, sde_install=SDE_INSTALL,
 #               mac="00:00:00:00:10:01", ip="10.10.10.1",
 #               cls=Tofino1P4C if CFG['tofino'] == 1 else Tofino2P4C)
