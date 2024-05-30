@@ -23,7 +23,7 @@ with open(CONFIG_JSON, 'r') as f:
     cfg = data[SWITCH_NAME]
 
 # get a handle to the relevant tables
-P4 = bfrt.switch.pipe
+P4 = bfrt.simple_switch.pipe
 ICMP = P4.Ingress.icmp_table
 ARP  = P4.Ingress.arp_table
 FRWD = P4.Ingress.forwarding_table
