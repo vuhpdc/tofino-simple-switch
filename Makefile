@@ -14,9 +14,9 @@ endif
 p4: $(P4_SOURCES)
 	  rm -rf build
 	  mkdir build
-	  cmake -Bbuild -S${SDE}/p4studio -DCMAKE_INSTALL_PREFIX=${SDE_INSTALL}\
-		  								              -DCMAKE_MODULE_PATH=${SDE}/cmake\
-			  								            -DP4_NAME=simple_switch\
-				  							            -DP4_PATH=`pwd`/$(P4_MAIN) -DP4_LANG=p4-16
+	  cmake -B `pwd`/build -S ${SDE}/p4studio -DCMAKE_INSTALL_PREFIX=${SDE_INSTALL}\
+		  								                      -DCMAKE_MODULE_PATH=${SDE}/cmake\
+			  								                    -DP4_NAME=simple_switch\
+				  							                    -DP4_PATH=`pwd`/$(P4_MAIN) -DP4_LANG=p4-16
 	  make -C build simple_switch
 
