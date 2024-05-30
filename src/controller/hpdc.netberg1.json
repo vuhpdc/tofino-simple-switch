@@ -1,0 +1,13 @@
+{
+  "s1" : {
+    "tofino": 1,
+    "program": "device/main.p4",
+    "endpoint": {"mac" : "10:10:10:10:10:01", "ip" : "10.1.0.0", "arp-resolver": true},
+    "ports" : {
+      "1" : [{"name" : "gnode1.0", "mac": "10:70:fd:df:a5:aa", "ip": "10.0.1.0"},
+             {"name" : "gnode1.1", "mac": "10:70:fd:df:a5:ab", "ip": "10.0.1.1"}],
+      "2" : [{"name" : "gnode2.0", "mac": "10:70:fd:df:a4:26", "ip": "10.0.2.0"},
+             {"name" : "gnode2.1", "mac": "10:70:fd:df:a4:27", "ip": "10.0.2.1"}]
+    }
+  }
+}
