@@ -5,10 +5,10 @@ $(info P4_FILES: $(P4_SOURCES))
 $(info P4_MAIN: $(P4_MAIN))
 
 ifndef
-	$(error SDE is undefined)
+$(error SDE is undefined)
 endif
 ifndef SDE_INSTALL
-	$(error SDE_INSTALL is undefined)
+$(error SDE_INSTALL is undefined)
 endif
 
 p4: check-env $(P4_SOURCES)
