@@ -18,5 +18,6 @@ p4: $(P4_SOURCES)
 		  								                      -DCMAKE_MODULE_PATH=${SDE}/cmake\
 			  								                    -DP4_NAME=simple_switch\
 				  							                    -DP4_PATH=`pwd`/$(P4_MAIN) -DP4_LANG=p4-16
-	  make -C build simple_switch
+	  make -C `pwd`/build simple_switch
+		make -C `pwd`/build install
 
