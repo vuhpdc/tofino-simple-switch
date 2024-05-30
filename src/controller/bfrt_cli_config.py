@@ -4,7 +4,7 @@ import sys
 import pprint
 from netaddr import IPAddress, EUI
 
-CONFIG_JSON = "tofino2.json"
+CONFIG_JSON = "hpdc.netberg1.json"
 CONFIG_JSON = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), CONFIG_JSON)
 SWITCH_NAME = 's1'
@@ -84,9 +84,7 @@ if "ports" in cfg:
     # a static mapping is enough.
     for p in cfg["ports"]:
         cage = int(p if '/' not in p else p.split('/')[0])
-        port = bfrt.port.port_hdl_info.get(
-            conn_id=cage, chnl_id=0, print_ents=False).data[b'$DEV_PORT']
-        print(port)
+        port = bfrt.port.port_hdl_info.get(CONN_ID=cage, CHNL_ID=0, print_ents=False).data[b'$DEV_PORT']
 
         for i, host_info in enumerate(cfg["ports"][p]):
             err = None
@@ -105,5 +103,5 @@ if "ports" in cfg:
         #   port-add cage/- 100G None
         #   an-set cage/- 2
         #   port-enb cage/-
-        bfrt.port.port.add(dev_port=port, speed="BF_SPEED_100G", fec="BF_FEC_TYP_NONE",
-                           auto_negotiation="PM_AN_FORCE_DISABLE", port_enable=True)
+        bfrt.port.port.add(DEV_PORT=port, SPEED="BF_SPEED_100G", FEC="BF_FEC_TYP_NONE",
+                           AUTO_NEGOTIATION="PM_AN_FORCE_DISABLE", PORT_ENABLE=True)

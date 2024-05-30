@@ -12,9 +12,9 @@ The files [tofino1.json](src/controller/tofino1.json) and [tofino2.json](src/con
 
 To use this program on the real switch, first make sure the SDE is installed correctly the env. vars `$SDE` and `$SDE_INSTALL` are correcly set.
 
-The, SSH to the switch and start an tmux session (if the connection is lost the switchd user-space driver will be killed)
+Then, SSH to the switch and start the user-space driver in a tmux session (connection lost -> driver killed -> no switch)
 ```bash
-tmux -new-session -s switch
+tmux -new -s switchd
 ```
 then,
 ```bash
@@ -26,6 +26,23 @@ Now open another terminal and SSH to the switch again, you don't need tmux for t
 ```bash
 $SDE/run_bfshell -b `pwd`/src/controller/bfrt_cli_config.py
 ```
+
+If all went well, you should be seeing something like this:
+
+![device_configuration_ok](assets/device_configured_ok.png)
+
+Confirm the links are UP and running. On the switchd terminal type:
+
+```bash
+bfshell> ucli
+bf-sde> pm
+bf-sde.pm> show
+```
+
+If all went well, you should be seeing something like this:
+
+![ports_up](assets/ports_up.png)
+
 
 #### Ports
 
