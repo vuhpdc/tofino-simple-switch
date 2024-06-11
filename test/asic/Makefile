@@ -26,7 +26,7 @@ p4: $(P4_SOURCES)
 run: p4
 	${SDE}/run_switchd.sh -p simple_switch
 
-config: p4
+config:
 	${SDE}/run_bfshell.sh -b ../../src/controller/bfrt_cli_config.py
 
 .PHONY: run
