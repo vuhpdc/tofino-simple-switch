@@ -1,5 +1,5 @@
 P4_SOURCES := $(shell find '../../src/device' -name '*.p4')
-P4_MAIN    := src/device/main.p4
+P4_MAIN    := ../../src/device/main.p4
 
 $(info P4_FILES: $(P4_SOURCES))
 $(info P4_MAIN: $(P4_MAIN))
