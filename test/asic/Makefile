@@ -1,4 +1,4 @@
-P4_SOURCE_DIR := $(abspath '${CURDIR}/../../src/device')
+P4_SOURCE_DIR := $(shell realpath '../../src/device')
 P4_SOURCES := $(shell find ${P4_SOURCE_DIR} -name '*.p4')
 P4_MAIN    := ${P4_SOURCE_DIR}/main.p4
 
