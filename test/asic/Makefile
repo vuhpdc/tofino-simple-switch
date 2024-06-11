@@ -1,7 +1,9 @@
-P4_SOURCES := $(shell find '../../src/device' -name '*.p4')
-P4_MAIN    := ../../src/device/main.p4
+P4_SOURCE_DIR := $(abspath '../../src/device')
+P4_SOURCES := $(shell find ${P4_SOURCE_DIR} -name '*.p4')
+P4_MAIN    := ${P4_SOURCE_DIR}/main.p4
 
-$(info P4_FILES: $(P4_SOURCES))
+$(info P4_SOURCE_DIR: ${P4_SOURCE_DIR})
+$(info P4_SOURCES: $(P4_SOURCES))
 $(info P4_MAIN: $(P4_MAIN))
 
 ifndef SDE
