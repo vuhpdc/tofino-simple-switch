@@ -4,8 +4,6 @@ SOURCES       := $(ROOT)/src
 SCRIPTS       := $(ROOT)/scripts
 TEST          := $(ROOT)/test
 BUILD         := $(ROOT)/build
-# SOURCES       := $(shell realpath 'src')
-# SCRIPTS       := $(shell realpath 'scripts')
 
 P4_SOURCES    := $(shell find $(SOURCES)/device -name '*.p4')
 P4_MAIN       := $(SOURCES)/device/simple_switch.p4
@@ -54,8 +52,7 @@ asic-config-grpc:
 	echo "GRPC config not implemented yet"
 
 asic-stop:
-	tmux send-keys -t switch C-\\
-	tmux send-keys -t switch.0 C-\\
+  for pane in $(tmux list-panes -t switch | awk '{print $2}'); do tmux send-keys -t $$pane C-\\; done
 	tmux kill-session -t switch
 
 asic-attach:
