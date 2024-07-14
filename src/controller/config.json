@@ -1,0 +1,11 @@
+{
+  "name": "switch",
+  "tofino": 1,
+  "asic": false,
+  "program": "src/device/simple_switch.p4",
+  "drop-on-miss": false,
+  "arp-resolver": true,
+  "endpoints": [],
+  "ports": {},
+  "multicast": {}
+}

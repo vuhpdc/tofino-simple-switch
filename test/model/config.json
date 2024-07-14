@@ -1,0 +1,33 @@
+{
+  "name": "s1",
+  "tofino": 1,
+  "asic": false,
+  "program": "src/device/simple_switch.p4",
+  "drop-on-miss": false,
+  "arp-resolver": true,
+  "endpoints": [{
+    "mac": "10:10:10:10:10:01",
+    "ip4": "10.10.10.1",
+    "enabled": true}],
+  "ports": {
+    "1/0": {
+      "speed": "100", "enabled": true, "auto-negotiation": false,
+      "to": { "name": "h1", "kind": "host", "iface": "h1-eth0", "mac": "10:00:00:00:00:01", "ip4": "10.0.0.1", "prefix": 24}
+    },
+    "2/0": {
+      "speed": "100", "enabled": true, "auto-negotiation": false,
+      "to": { "name": "h2", "kind": "host", "iface": "h2-eth0", "mac": "10:00:00:00:00:02", "ip4": "10.0.0.2", "prefix": 24}
+    },
+    "3/0": {
+      "speed": "100", "enabled": true, "auto-negotiation": false,
+      "to": { "name": "h3", "kind": "host", "iface": "h3-eth0", "mac": "10:00:00:00:00:03", "ip4": "10.0.0.3", "prefix": 24}
+    },
+    "4/0": {
+      "speed": "100", "enabled": true, "auto-negotiation": false,
+      "to": { "name": "h4", "kind": "host", "iface": "h4-eth0", "mac": "10:00:00:00:00:04", "ip4": "10.0.0.4", "prefix": 24}
+    }
+  },
+  "multicast": {
+    "2": {"ports": ["1/0", "2/0"], "desc": "test mcast group"}
+  }
+}

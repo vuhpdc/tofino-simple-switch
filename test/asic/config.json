@@ -1,0 +1,29 @@
+{
+  "name": "netberg1",
+  "tofino": 1,
+  "asic": true,
+  "program": "src/device/simple_switch.p4",
+  "drop-on-miss": false,
+  "arp-resolver": true,
+  "bfrt": {
+    "ip4": "10.10.0.201",
+    "grpc-port": 50052
+  },
+  "endpoints": [{
+    "mac": "42:42:42:42:42:42",
+    "ip4": "42.0.0.0",
+    "enabled": true}],
+  "ports": {
+    "1/0": {
+      "speed": "100", "enabled": true, "auto-negotiation": false,
+      "to": { "name": "hpdc-gnode1", "kind": "host", "iface": "ens4f0", "mac": "10:70:fd:df:a5:aa", "ip4": "42.0.0.1", "prefix": 24}
+    },
+    "2/0": {
+      "speed": "100", "enabled": true, "auto-negotiation": false,
+      "to": { "name": "hpdc-gnode2", "kind": "host", "iface": "ens4f0", "mac": "10:70:fd:df:a4:26", "ip4": "42.0.0.2", "prefix": 24}
+    }
+  },
+  "multicast": {
+    "2": {"ports": ["1/0", "2/0"], "desc": "test mcast group"}
+  }
+}
