@@ -52,7 +52,7 @@ asic-config-grpc:
 	echo "GRPC config not implemented yet"
 
 asic-stop:
-  for pane in $(tmux list-panes -t switch | awk '{print $2}'); do tmux send-keys -t $$pane C-\\; done
+	for pane in $(tmux list-panes -t switch | awk '{print $2}'); do tmux send-keys -t $$pane C-\\; done
 	tmux kill-session -t switch
 
 asic-attach:
