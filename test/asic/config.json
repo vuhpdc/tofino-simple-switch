@@ -21,6 +21,14 @@
     "2/0": {
       "speed": "100", "enabled": true, "auto-negotiation": false,
       "to": { "name": "hpdc-gnode2", "kind": "host", "iface": "ens4f0", "mac": "10:70:fd:df:a4:26", "ip4": "42.0.0.2", "prefix": 24}
+    },
+    "3/0": {
+      "speed": "100", "enabled": true, "auto-negotiation": false,
+      "to": { "name": "hpdc-gnode3", "kind": "host", "iface": "ens4f0", "mac": "94:6d:ae:8c:ad:74", "ip4": "42.0.0.3", "prefix": 24}
+    },
+    "4/0": {
+      "speed": "100", "enabled": true, "auto-negotiation": false,
+      "to": { "name": "hpdc-gnode4", "kind": "host", "iface": "ens4f0", "mac": "94:6d:ae:8c:e4:7c", "ip4": "42.0.0.4", "prefix": 24}
     }
   },
   "multicast": {
