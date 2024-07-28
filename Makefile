@@ -35,7 +35,7 @@ build_dir:
 check-tofino-target:
 	@if [ -z "$$TOFINO" ]; then \
 		echo "TOFINO is not set."; \
-		read -p "Do you want to continue with the default value (TOFINO=1)? (y/n): " answer; \
+		read -p "Do you want to continue with the default value (TOFINO=1)? (y/N): " answer; \
 		if [ "$$answer" != "y" ]; then \
 			echo "Exiting..."; \
 			exit 1; \
