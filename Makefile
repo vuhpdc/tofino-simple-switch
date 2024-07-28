@@ -54,7 +54,7 @@ asic: asic-compile
 	tmux send-keys -t switch.1 'cd ${BUILD}/log && ${SDE}/run_switchd.sh -c ${BUILD}/${P4_NAME}/${P4_NAME}.conf ' C-m
 	tmux attach -t switch
 
-asic-start: asic-compile
+asic-start:
 	tmux new -d -s switch
 	tmux send-keys -t switch 'cd ${BUILD}/log && ${SDE}/run_switchd.sh -c ${BUILD}/${P4_NAME}/${P4_NAME}.conf ' C-m
 	tmux attach -t switch
