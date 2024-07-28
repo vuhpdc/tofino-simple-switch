@@ -42,10 +42,10 @@ check-tofino-target:
 		fi; \
 		export TOFINO=1; \
 	fi; \
-	echo "Using TOFINO=${TOFINO}";
+	echo "Using TOFINO=$${TOFINO}";
 
 asic-compile: check-tofino-target $(P4_SOURCES) build_dir
-	${SDE_INSTALL}/bf-p4c -a tna -b tofino2 -o ${BUILD}/${P4_NAME}
+	${SDE_INSTALL}/bin/bf-p4c -a tna -b tofino2 -o ${BUILD}/${P4_NAME} ${P4_MAIN}
 
 asic: asic-compile
 	tmux new -d -s switch
