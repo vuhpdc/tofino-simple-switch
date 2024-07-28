@@ -25,23 +25,38 @@ build_dir:
 	mkdir ${BUILD}
 	mkdir ${BUILD}/log
 
-p4: $(P4_SOURCES) build_dir
-	cmake -B ${BUILD} -S ${SDE}/p4studio\
-		-DCMAKE_INSTALL_PREFIX=${SDE_INSTALL} -DCMAKE_MODULE_PATH=${SDE}/cmake\
-		-DP4_NAME=$(P4_NAME) -DP4_PATH=$(P4_MAIN) -DP4_LANG=p4-16
-	make -C ${BUILD} simple_switch
-	make -C ${BUILD} install
+# p4: $(P4_SOURCES) build_dir
+# 	cmake -B ${BUILD} -S ${SDE}/p4studio\
+# 		-DCMAKE_INSTALL_PREFIX=${SDE_INSTALL} -DCMAKE_MODULE_PATH=${SDE}/cmake\
+# 		-DP4_NAME=$(P4_NAME) -DP4_PATH=$(P4_MAIN) -DP4_LANG=p4-16
+# 	make -C ${BUILD} simple_switch
+# 	make -C ${BUILD} install
 
-asic: p4
+check-tofino-version:
+	@if [ -z "$$TOFINO" ]; then \
+		echo "TOFINO is not set."; \
+		read -p "Do you want to continue with the default value (TOFINO=1)? (y/n): " answer; \
+		if [ "$$answer" != "y" ]; then \
+			echo "Exiting..."; \
+			exit 1; \
+		fi; \
+		export TOFINO=1; \
+	fi; \
+	echo "Using TOFINO=${TOFINO}";
+
+asic-compile: check-tofino-target $(P4_SOURCES) build_dir
+	${SDE_INSTALL}/bf-p4c -a tna -b tofino2 -o ${BUILD}/${P4_NAME}
+
+asic: asic-compile
 	tmux new -d -s switch
 	tmux split-window -t switch:0 -v
 	tmux send-keys -t switch.0 'cd ${ROOT} && ${SCRIPTS}/configure-switch-cli.sh ${SDE} ${TEST}/asic/config.json' C-m
-	tmux send-keys -t switch.1 'cd ${BUILD}/log && ${SDE}/run_switchd.sh -p simple_switch' C-m
+	tmux send-keys -t switch.1 'cd ${BUILD}/log && ${SDE}/run_switchd.sh -c ${BUILD}/${P4_NAME}/${P4_NAME}.conf ' C-m
 	tmux attach -t switch
 
-asic-start: p4
+asic-start: asic-compile
 	tmux new -d -s switch
-	tmux send-keys -t switch 'cd ${BUILD}/log && ${SDE}/run_switchd.sh -p simple_switch' C-m
+	tmux send-keys -t switch 'cd ${BUILD}/log && ${SDE}/run_switchd.sh -c ${BUILD}/${P4_NAME}/${P4_NAME}.conf ' C-m
 	tmux attach -t switch
 
 asic-config: asic-config-cli
