@@ -32,7 +32,7 @@ build_dir:
 # 	make -C ${BUILD} simple_switch
 # 	make -C ${BUILD} install
 
-check-tofino-version:
+check-tofino-target:
 	@if [ -z "$$TOFINO" ]; then \
 		echo "TOFINO is not set."; \
 		read -p "Do you want to continue with the default value (TOFINO=1)? (y/n): " answer; \
